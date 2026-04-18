@@ -2,7 +2,7 @@
 
 Admin tool for running weekly coffee chat pairings in a student club. Manages rosters, generates intelligent pairings, and tracks history across academic years.
 
-**[Live demo →](---)** — use the demo login button.
+**[Live demo →](https://c3cafedemo.vercel.app)** — use the demo login button.
 
 ---
 
