@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>C3 Cafe — Stamp Card Mockup</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=DM+Sans:wght@400;500;600&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream:       #F2EDE4;
+    --cream-dark:  #E8DED0;
+    --cream-darker:#DDD0BE;
+    --blue:        #849DBB;
+    --blue-light:  #B5CADB;
+    --blue-dark:   #5F7A9A;
+    --brown:       #3D2314;
+    --brown-light: #7A5C4A;
+    --tan:         #C4A882;
+    --tan-light:   #E0CEBC;
+  }
+
+  body {
+    background: var(--cream);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    color: var(--brown);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* ── Header ─────────────────────────────────────── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: var(--cream-dark);
+    border-bottom: 1px solid var(--tan-light);
+    padding: 0 24px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    box-shadow: 0 1px 3px rgba(61,35,20,0.07);
+  }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .brand-name { font-family: 'DM Serif Display', serif; font-size: 17px; color: var(--brown); }
+  nav { display: flex; gap: 4px; }
+  .nav-tab {
+    font-size: 13px; font-weight: 500; padding: 6px 16px;
+    border-radius: 9999px; border: none; cursor: pointer;
+    background: transparent; color: var(--brown-light);
+  }
+  .nav-tab.active {
+    background: var(--blue); color: white;
+  }
+
+  /* ── Page ───────────────────────────────────────── */
+  .page { max-width: 720px; margin: 0 auto; padding: 32px 24px 80px; }
+
+  .page-title { font-family: 'DM Serif Display', serif; font-size: 22px; margin-bottom: 2px; }
+  .page-sub { font-size: 12px; color: rgba(122,92,74,0.65); margin-bottom: 28px; }
+
+  /* ── Cards ──────────────────────────────────────── */
+  .ui-card {
+    background: var(--cream-dark);
+    border: 1px solid var(--tan-light);
+    border-radius: 14px;
+    box-shadow: 0 1px 3px rgba(61,35,20,0.08);
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+
+  .section-label {
+    font-size: 11px; font-weight: 600; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--tan);
+    margin-bottom: 12px;
+  }
+
+  /* ── Generate section ───────────────────────────── */
+  .generate-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+  .generate-title { font-family: 'DM Serif Display', serif; font-size: 16px; }
+  .btn-primary {
+    background: var(--blue); color: white;
+    border: none; border-radius: 9999px;
+    padding: 9px 20px; font-size: 13px; font-weight: 500;
+    cursor: pointer; display: flex; align-items: center; gap: 6px;
+  }
+
+  /* ── THE LOYALTY CARD ───────────────────────────── */
+  .loyalty-card-wrap { margin-bottom: 28px; }
+
+  .loyalty-card {
+    /* Paper texture via layered backgrounds */
+    background-color: #F6F0E6;
+    background-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    border-radius: 18px;
+    border: 1.5px solid var(--tan-light);
+    box-shadow:
+      0 4px 16px rgba(61,35,20,0.12),
+      0 1px 3px rgba(61,35,20,0.08),
+      inset 0 1px 0 rgba(255,255,255,0.6);
+    overflow: hidden;
+    position: relative;
+  }
+
+  /* Top strip — blue branding band */
+  .card-header-strip {
+    background: var(--blue);
+    padding: 14px 24px 12px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: relative;
+  }
+  .card-brand {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    color: white;
+    letter-spacing: 0.05em;
+  }
+  .card-year-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    color: rgba(255,255,255,0.65);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* Doodle dashes on the strip */
+  .card-header-strip::after {
+    content: '✦  ·  ✦  ·  ✦  ·  ✦  ·  ✦  ·  ✦  ·  ✦';
+    position: absolute;
+    bottom: -1px;
+    left: 0; right: 0;
+    text-align: center;
+    font-size: 8px;
+    color: rgba(255,255,255,0.25);
+    letter-spacing: 3px;
+  }
+
+  /* Stamp grid area */
+  .card-stamps-area {
+    padding: 22px 24px 20px;
+  }
+
+  .stamps-row {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  /* Individual stamp slot */
+  .stamp-slot {
+    position: relative;
+    width: 72px;
+    height: 72px;
+    cursor: pointer;
+    flex-shrink: 0;
+  }
+
+  /* Empty slot — dashed circle */
+  .stamp-slot.empty .stamp-circle {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    border: 2px dashed var(--tan);
+    background: transparent;
+    display: flex; align-items: center; justify-content: center;
+    transition: border-color 0.2s;
+  }
+  .stamp-slot.empty:hover .stamp-circle { border-color: var(--blue-light); }
+  .stamp-slot.empty .stamp-inner { font-size: 9px; color: var(--tan); font-family: 'DM Mono', monospace; }
+
+  /* Filled/stamped slot */
+  .stamp-slot.filled .stamp-circle {
+    width: 100%; height: 100%;
+    border-radius: 50%;
+    background: var(--blue);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    box-shadow:
+      0 2px 8px rgba(132,157,187,0.4),
+      inset 0 1px 0 rgba(255,255,255,0.2);
+    transition: transform 0.15s, box-shadow 0.15s;
+    /* Slight ink-stamp roughness */
+    border: 2px solid var(--blue-dark);
+  }
+  .stamp-slot.filled:hover .stamp-circle {
+    transform: scale(1.06);
+    box-shadow: 0 4px 14px rgba(132,157,187,0.5);
+  }
+  .stamp-slot.filled.selected .stamp-circle {
+    background: var(--blue-dark);
+    transform: scale(1.08);
+    box-shadow: 0 4px 18px rgba(95,122,154,0.6);
+    border-color: var(--brown);
+  }
+  .stamp-week-num {
+    font-family: 'DM Serif Display', serif;
+    font-size: 22px;
+    color: white;
+    line-height: 1;
+  }
+  .stamp-week-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 7.5px;
+    color: rgba(255,255,255,0.7);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-top: 1px;
+  }
+  .stamp-date {
+    font-size: 9px;
+    color: var(--brown-light);
+    text-align: center;
+    margin-top: 5px;
+    font-family: 'DM Mono', monospace;
+  }
+
+  /* Ink smear effect on filled stamps (pseudo-element) */
+  .stamp-slot.filled .stamp-circle::before {
+    content: '';
+    position: absolute;
+    width: 60%; height: 60%;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.08);
+    top: 8%; left: 15%;
+  }
+
+  /* Card footer */
+  .card-footer {
+    border-top: 1px dashed var(--tan-light);
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .card-footer-note {
+    font-size: 9.5px;
+    color: var(--tan);
+    font-family: 'DM Mono', monospace;
+    letter-spacing: 0.06em;
+  }
+  .card-doodle {
+    font-size: 11px;
+    color: var(--tan);
+    letter-spacing: 2px;
+  }
+
+  /* ── Pairs reveal panel ─────────────────────────── */
+  .pairs-panel {
+    margin-top: 16px;
+    background: white;
+    border: 1.5px solid var(--tan-light);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(61,35,20,0.08);
+    animation: slideDown 0.2s ease-out;
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-6px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .pairs-panel-header {
+    background: var(--cream-dark);
+    border-bottom: 1px solid var(--tan-light);
+    padding: 12px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .pairs-panel-title {
+    font-family: 'DM Serif Display', serif;
+    font-size: 15px;
+    color: var(--brown);
+  }
+  .pairs-panel-meta {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: rgba(122,92,74,0.6);
+  }
+
+  .pair-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 20px;
+    border-bottom: 1px solid rgba(196,168,130,0.18);
+    font-size: 13px;
+  }
+  .pair-row:last-child { border-bottom: none; }
+  .pair-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    color: var(--tan);
+    width: 20px;
+    flex-shrink: 0;
+  }
+  .pair-names { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+  .pair-name { font-weight: 500; color: var(--brown); }
+  .pair-sep { color: var(--tan); font-size: 11px; }
+  .cohort-chip {
+    font-size: 10px;
+    padding: 2px 8px;
+    border-radius: 9999px;
+    background: rgba(132,157,187,0.12);
+    color: var(--blue-dark);
+    border: 1px solid rgba(132,157,187,0.25);
+    font-weight: 500;
+  }
+
+  /* ── Doodle goose SVG ───────────────────────────── */
+  .goose-doodle {
+    width: 28px; height: 28px;
+    opacity: 0.35;
+  }
+
+  /* ── Note at bottom ─────────────────────────────── */
+  .mockup-note {
+    margin-top: 32px;
+    padding: 14px 18px;
+    background: rgba(132,157,187,0.1);
+    border: 1px solid rgba(132,157,187,0.25);
+    border-radius: 10px;
+    font-size: 12px;
+    color: var(--blue-dark);
+    line-height: 1.6;
+  }
+  .mockup-note strong { font-weight: 600; }
+</style>
+</head>
+<body>
+
+<!-- Header -->
+<header>
+  <div class="brand">
+    <!-- Goose SVG inline -->
+    <svg width="26" height="26" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg" style="opacity:0.8">
+      <ellipse cx="40" cy="52" rx="18" ry="22" stroke="#3D2314" stroke-width="3" fill="none"/>
+      <circle cx="40" cy="24" r="10" stroke="#3D2314" stroke-width="3" fill="none"/>
+      <path d="M50 24 Q62 18 64 26 Q60 28 54 27" stroke="#3D2314" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M32 60 Q28 72 22 74" stroke="#3D2314" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <path d="M48 60 Q52 72 58 74" stroke="#3D2314" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+      <circle cx="36" cy="21" r="2" fill="#3D2314"/>
+      <path d="M36 38 Q40 33 44 38" stroke="#3D2314" stroke-width="2" stroke-linecap="round" fill="none"/>
+    </svg>
+    <span class="brand-name">C3 Cafe</span>
+  </div>
+  <nav>
+    <button class="nav-tab">Roster</button>
+    <button class="nav-tab active">Pairings</button>
+  </nav>
+  <div style="font-size:12px; color: var(--brown-light); font-weight:500;">2024–2025 ▾</div>
+</header>
+
+<div class="page">
+  <h1 class="page-title">Pairings</h1>
+  <p class="page-sub">2024–2025 · 11 active members</p>
+
+  <!-- Requests -->
+  <div class="ui-card">
+    <div style="display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;">
+      <span style="font-family:'DM Serif Display',serif; font-size:15px;">Requests</span>
+      <button style="font-size:12px; padding:5px 14px; border-radius:9999px; border:1px solid var(--tan-light); background:var(--cream-darker); cursor:pointer; font-weight:500;">+ Add request</button>
+    </div>
+    <p style="font-size:12px; color:rgba(122,92,74,0.55);">Pre-assign any coffee chat requests before generating!</p>
+  </div>
+
+  <!-- Generate -->
+  <div class="ui-card" style="margin-bottom: 28px;">
+    <div class="generate-row">
+      <div>
+        <div class="generate-title">Generate Week 4</div>
+      </div>
+      <div style="display:flex; align-items:center; gap:10px;">
+        <input type="date" value="2025-02-10" style="font-size:12px; padding:6px 10px; border-radius:8px; border:1px solid var(--tan-light); background:var(--cream); color:var(--brown); font-family:'DM Mono',monospace;" />
+        <button class="btn-primary">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+          Generate
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- HISTORY LABEL -->
+  <div class="section-label">History</div>
+
+  <!-- ══════════════════════════════════════════════════
+       THE LOYALTY CARD
+  ════════════════════════════════════════════════════ -->
+  <div class="loyalty-card-wrap">
+    <div class="loyalty-card">
+
+      <!-- Blue header strip -->
+      <div class="card-header-strip">
+        <div>
+          <div class="card-brand">C3 Cafe ✦</div>
+          <div class="card-year-label">Coffee Chat Pairings · 2024–2025</div>
+        </div>
+        <svg class="goose-doodle" viewBox="0 0 80 80" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <ellipse cx="40" cy="52" rx="18" ry="22" stroke="white" stroke-width="3" fill="none"/>
+          <circle cx="40" cy="24" r="10" stroke="white" stroke-width="3" fill="none"/>
+          <path d="M50 24 Q62 18 64 26 Q60 28 54 27" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+          <path d="M32 60 Q28 72 22 74" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <path d="M48 60 Q52 72 58 74" stroke="white" stroke-width="2.5" stroke-linecap="round" fill="none"/>
+          <circle cx="36" cy="21" r="2" fill="white" opacity="0.8"/>
+          <path d="M36 38 Q40 33 44 38" stroke="white" stroke-width="2" stroke-linecap="round" fill="none"/>
+        </svg>
+      </div>
+
+      <!-- Stamps area -->
+      <div class="card-stamps-area">
+        <div class="stamps-row">
+
+          <!-- Week 1 — filled, selected (clicked) -->
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div class="stamp-slot filled selected" onclick="selectWeek(1)">
+              <div class="stamp-circle">
+                <span class="stamp-week-num">1</span>
+                <span class="stamp-week-label">week</span>
+              </div>
+            </div>
+            <div class="stamp-date">Jan 20</div>
+          </div>
+
+          <!-- Week 2 — filled -->
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div class="stamp-slot filled" onclick="selectWeek(2)">
+              <div class="stamp-circle">
+                <span class="stamp-week-num">2</span>
+                <span class="stamp-week-label">week</span>
+              </div>
+            </div>
+            <div class="stamp-date">Jan 27</div>
+          </div>
+
+          <!-- Week 3 — filled -->
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div class="stamp-slot filled" onclick="selectWeek(3)">
+              <div class="stamp-circle">
+                <span class="stamp-week-num">3</span>
+                <span class="stamp-week-label">week</span>
+              </div>
+            </div>
+            <div class="stamp-date">Feb 3</div>
+          </div>
+
+          <!-- Spacer/divider doodle -->
+          <div style="font-size:13px; color:var(--tan); letter-spacing:4px; margin: 0 4px; margin-bottom:16px;">· · ·</div>
+
+          <!-- Empty slots -->
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div class="stamp-slot empty">
+              <div class="stamp-circle"><span class="stamp-inner">4</span></div>
+            </div>
+            <div class="stamp-date" style="color:var(--tan);">—</div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div class="stamp-slot empty">
+              <div class="stamp-circle"><span class="stamp-inner">5</span></div>
+            </div>
+            <div class="stamp-date" style="color:var(--tan);">—</div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div class="stamp-slot empty">
+              <div class="stamp-circle"><span class="stamp-inner">6</span></div>
+            </div>
+            <div class="stamp-date" style="color:var(--tan);">—</div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div class="stamp-slot empty">
+              <div class="stamp-circle"><span class="stamp-inner">7</span></div>
+            </div>
+            <div class="stamp-date" style="color:var(--tan);">—</div>
+          </div>
+
+          <div style="display:flex; flex-direction:column; align-items:center;">
+            <div class="stamp-slot empty">
+              <div class="stamp-circle"><span class="stamp-inner">8</span></div>
+            </div>
+            <div class="stamp-date" style="color:var(--tan);">—</div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Card footer -->
+      <div class="card-footer">
+        <span class="card-footer-note">Click a stamp to see pairings</span>
+        <span class="card-doodle">✦ ☕ ✦</span>
+      </div>
+
+    </div>
+
+    <!-- ── PAIRS REVEAL PANEL (Week 1 shown) ── -->
+    <div class="pairs-panel" id="pairs-panel">
+      <div class="pairs-panel-header">
+        <span class="pairs-panel-title">Week 1 — January 20, 2025</span>
+        <div style="display:flex; align-items:center; gap:8px;">
+          <span class="pairs-panel-meta">5 pairs</span>
+          <button style="font-size:11px; padding:4px 10px; border-radius:9999px; border:1px solid var(--tan-light); background:var(--cream-darker); cursor:pointer; color:var(--brown-light); font-weight:500;">Edit</button>
+          <button style="font-size:11px; padding:4px 10px; border-radius:9999px; border:1px solid rgba(132,157,187,0.3); background:rgba(132,157,187,0.08); cursor:pointer; color:var(--blue-dark); font-weight:500; display:flex;align-items:center;gap:4px;">✕</button>
+        </div>
+      </div>
+
+      <div class="pair-row">
+        <span class="pair-num">01</span>
+        <div class="pair-names">
+          <span class="pair-name">Amanda Shi</span>
+          <span class="cohort-chip">Fall 24</span>
+          <span class="pair-sep">×</span>
+          <span class="pair-name">Lena Fischer</span>
+          <span class="cohort-chip">Spring 25</span>
+        </div>
+      </div>
+      <div class="pair-row">
+        <span class="pair-num">02</span>
+        <div class="pair-names">
+          <span class="pair-name">Jake Torres</span>
+          <span class="cohort-chip">Fall 24</span>
+          <span class="pair-sep">×</span>
+          <span class="pair-name">Marcus Webb</span>
+          <span class="cohort-chip">Spring 25</span>
+        </div>
+      </div>
+      <div class="pair-row">
+        <span class="pair-num">03</span>
+        <div class="pair-names">
+          <span class="pair-name">Priya Nair</span>
+          <span class="cohort-chip">Spring 24</span>
+          <span class="pair-sep">×</span>
+          <span class="pair-name">Zoe Kim</span>
+          <span class="cohort-chip">Spring 25</span>
+        </div>
+      </div>
+      <div class="pair-row">
+        <span class="pair-num">04</span>
+        <div class="pair-names">
+          <span class="pair-name">Carlos Mendez</span>
+          <span class="cohort-chip">Spring 24</span>
+          <span class="pair-sep">×</span>
+          <span class="pair-name">Theo Patel</span>
+          <span class="cohort-chip">Spring 25</span>
+        </div>
+      </div>
+      <div class="pair-row">
+        <span class="pair-num">05</span>
+        <div class="pair-names">
+          <span class="pair-name">Sophie Park</span>
+          <span class="cohort-chip">Spring 24</span>
+          <span class="pair-sep">×</span>
+          <span class="pair-name">Maya Johnson</span>
+          <span class="cohort-chip">Fall 24</span>
+          <span class="pair-sep">×</span>
+          <span class="pair-name">Ryan Okafor</span>
+          <span class="cohort-chip">Fall 24</span>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /loyalty-card-wrap -->
+
+  <!-- Mockup annotation -->
+  <div class="mockup-note">
+    <strong>Mockup notes:</strong> Week 1 is selected (darker stamp). Weeks 2–3 are generated (blue stamps). Weeks 4–8 are empty slots (dashed circles). Clicking any filled stamp opens the pairs panel below the card. The card grows as weeks are generated — empty slots always show ahead so the card feels like it's filling up over the semester.
+  </div>
+
+</div><!-- /page -->
+
+<script>
+  // Simple click interaction for the mockup
+  document.querySelectorAll('.stamp-slot.filled').forEach(slot => {
+    slot.addEventListener('click', function() {
+      document.querySelectorAll('.stamp-slot').forEach(s => s.classList.remove('selected'));
+      this.classList.add('selected');
+    });
+  });
+</script>
+</body>
+</html>

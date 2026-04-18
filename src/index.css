@@ -1,0 +1,225 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-ink text-cream font-sans;
+    min-height: 100vh;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-cream/25 ring-offset-2 ring-offset-ink;
+  }
+
+  ::-webkit-scrollbar { width: 5px; height: 5px; }
+  ::-webkit-scrollbar-track { @apply bg-ink-light; }
+  ::-webkit-scrollbar-thumb { @apply bg-ink-lighter rounded-pill; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-cream/15 rounded-pill; }
+}
+
+@layer components {
+
+  /* ══════════════════════════════════════════════════════════
+     BUTTONS
+  ══════════════════════════════════════════════════════════ */
+
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 font-sans font-medium
+           transition-all duration-150 cursor-pointer select-none
+           disabled:opacity-40 disabled:cursor-not-allowed;
+  }
+
+  /* Primary pill — ink black on cream card surfaces */
+  .btn-primary {
+    @apply btn bg-ink text-cream rounded px-5 py-2.5 text-sm
+           hover:bg-brown active:scale-[0.98];
+  }
+
+  /* Secondary — cream surface outlined */
+  .btn-secondary {
+    @apply btn bg-cream text-brown border border-tan rounded px-5 py-2.5 text-sm
+           hover:bg-cream-dark active:scale-[0.98];
+  }
+
+  /* Ghost */
+  .btn-ghost {
+    @apply btn text-brown/60 rounded px-3 py-2 text-sm
+           hover:bg-cream-dark hover:text-brown active:scale-[0.98];
+  }
+
+  /* Danger */
+  .btn-danger {
+    @apply btn bg-rust/10 text-rust-dark border border-rust/25 rounded px-4 py-2 text-sm
+           hover:bg-rust/20 active:scale-[0.98];
+  }
+
+  /* Icon */
+  .btn-icon {
+    @apply btn p-2 rounded text-brown/45 hover:bg-cream-dark hover:text-brown active:scale-95;
+  }
+
+  /* ── Ticket / label button — notched ends ─────────────── */
+  /*
+   * Brewique price-tag button. Two pseudo-circles at left/right
+   * create the "punched hole" ticket shape. The hole color is set
+   * via --btn-hole-bg on the parent surface (card or page).
+   */
+  .btn-label {
+    @apply btn relative;
+    font-family: 'DM Mono', monospace;
+    font-size: 10.5px;
+    font-weight: 500;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    padding: 9px 28px;
+    border-radius: 3px;
+    background: #E8D84A;
+    color: #0E0D0D;
+    border: none;
+    overflow: visible;
+  }
+  .btn-label:hover { transform: scale(1.04); background: #D4C23E; }
+  .btn-label:active { transform: scale(0.97); background: #C8B83A; }
+  .btn-label:disabled { transform: none; background: #E8D84A; }
+
+  .btn-label::before,
+  .btn-label::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: var(--btn-hole-bg, #E6DFD0);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .btn-label::before { left:  -6px; }
+  .btn-label::after  { right: -6px; }
+
+  /* Secondary label variant — cream with dark text */
+  .btn-label-secondary {
+    background: #D5C8B6;
+    color: #1E1C1A;
+  }
+  .btn-label-secondary:hover { background: #C4B8A8; }
+  .btn-label-secondary:active { background: #BAB09E; }
+
+  /* Blue label variant — dusty blue with cream text */
+  .btn-label-blue {
+    background: #5B8FA5;
+    color: #F2ECE0;
+  }
+  .btn-label-blue:hover { background: #4D7B90; }
+  .btn-label-blue:active { background: #3E6F80; }
+
+  /* ══════════════════════════════════════════════════════════
+     CARDS  — paper-white surfaces that float on dark bg
+  ══════════════════════════════════════════════════════════ */
+
+  .card {
+    @apply bg-cream-dark border border-tan/55 rounded-md text-brown;
+    --btn-hole-bg: #E6DFD0;
+  }
+
+  .card-hover {
+    @apply card cursor-pointer;
+    transition: border-color 0.12s, box-shadow 0.12s;
+  }
+  .card-hover:hover {
+    @apply border-tan;
+    box-shadow: 2px 2px 0px rgba(0,0,0,0.10);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     FORM ELEMENTS
+  ══════════════════════════════════════════════════════════ */
+
+  .input {
+    @apply w-full bg-cream border border-tan/80 rounded px-3 py-2.5 text-sm text-brown
+           placeholder:text-brown/30 font-sans
+           transition-colors duration-150
+           focus:outline-none focus:border-brown/50 focus:ring-2 focus:ring-brown/10
+           disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .label {
+    @apply block font-mono text-[10px] font-medium tracking-[0.2em] uppercase text-brown/45 mb-1.5;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     RECEIPT — authentic thermal-paper look
+  ══════════════════════════════════════════════════════════ */
+
+  .receipt {
+    @apply bg-cream border border-tan/60 font-mono text-sm text-brown;
+    border-radius: 3px;
+    box-shadow: 4px 4px 0px rgba(0,0,0,0.22);
+    --btn-hole-bg: #F2ECE0;
+  }
+
+  .receipt-header {
+    @apply px-4 pb-3 pt-4;
+    border-bottom: 1px dashed theme('colors.tan.DEFAULT');
+  }
+
+  .receipt-row {
+    @apply flex items-center gap-3 px-4 py-2.5;
+    border-bottom: 1px dashed theme('colors.tan.DEFAULT / 35%');
+  }
+  .receipt-row:last-child {
+    border-bottom: none;
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     BADGES
+  ══════════════════════════════════════════════════════════ */
+
+  .cohort-badge {
+    @apply inline-flex items-center px-2 py-0.5 rounded-sm
+           text-[10px] font-mono tracking-[0.1em] uppercase
+           bg-sage/15 text-sage-dark border border-sage/25;
+  }
+
+  .cohort-badge-alt {
+    @apply inline-flex items-center px-2 py-0.5 rounded-sm
+           text-[10px] font-mono tracking-[0.1em] uppercase
+           bg-dusty-blue/15 text-dusty-blue-dark border border-dusty-blue/25;
+  }
+
+  /* Yellow sticker badge (e.g. "latest") */
+  .badge-sticker {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-pill
+           text-[10px] font-mono tracking-widest uppercase font-medium
+           bg-yellow text-ink border border-yellow-dark;
+    box-shadow: 1px 1px 0px rgba(0,0,0,0.12);
+  }
+
+  /* ══════════════════════════════════════════════════════════
+     SECTION LABEL
+  ══════════════════════════════════════════════════════════ */
+
+  /* Works on both dark page bg and inside cream cards */
+  .section-label {
+    @apply text-[10px] font-mono font-medium tracking-[0.22em] uppercase text-tan-dark;
+  }
+
+  /* Variant for use directly on dark ink backgrounds */
+  .section-label-dark {
+    @apply text-[10px] font-mono font-medium tracking-[0.22em] uppercase text-cream/35;
+  }
+}

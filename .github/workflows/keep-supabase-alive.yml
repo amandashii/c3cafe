@@ -1,0 +1,29 @@
+name: Keep Supabase Alive
+
+# Pings the Supabase project every 3 days to prevent free-tier pausing.
+# Requires two repository secrets:
+#   SUPABASE_URL        — e.g. https://abc123.supabase.co
+#   SUPABASE_ANON_KEY   — the public anon key from your Supabase dashboard
+
+on:
+  schedule:
+    # Every 3 days at noon UTC (well within the 7-day inactivity window)
+    - cron: '0 12 */3 * *'
+  workflow_dispatch: # Allow manual trigger from GitHub UI
+
+jobs:
+  ping:
+    name: Ping Supabase
+    runs-on: ubuntu-latest
+    steps:
+      - name: Ping Supabase REST API
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" \
+            "${{ secrets.SUPABASE_URL }}/rest/v1/" \
+            -H "apikey: ${{ secrets.SUPABASE_ANON_KEY }}" \
+            -H "Authorization: Bearer ${{ secrets.SUPABASE_ANON_KEY }}")
+          echo "Supabase responded with HTTP $STATUS"
+          if [ "$STATUS" -ne 200 ]; then
+            echo "Warning: unexpected status $STATUS"
+            exit 1
+          fi
