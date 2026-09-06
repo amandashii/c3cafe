@@ -14,7 +14,7 @@ import type { Pair, PairingWeek } from '@/types';
 export function PairingsPage() {
   const { activeYear } = useYearContext();
   const { members } = useMembers(activeYear?.id ?? null);
-  const { requests, clearRequests } = useRequests(activeYear?.id ?? null);
+  const { requests, isLoading: requestsLoading, addRequest, deleteRequest, clearRequests } = useRequests(activeYear?.id ?? null);
   const { weeks, isLoading, saveWeek, updateWeekPairs, deleteWeek, nextWeekNumber } = usePairings(activeYear?.id ?? null);
 
   const [isGenerating, setIsGenerating] = useState(false);
@@ -98,7 +98,13 @@ export function PairingsPage() {
         </p>
       </div>
 
-      <RequestsQueue yearId={activeYear.id} activeMembers={activeMembers} />
+      <RequestsQueue
+        activeMembers={activeMembers}
+        requests={requests}
+        isLoading={requestsLoading}
+        addRequest={addRequest}
+        deleteRequest={deleteRequest}
+      />
 
       <div className="card p-5 mb-7 border-l-4 border-l-yellow">
         <div className="flex items-start gap-4 flex-wrap">

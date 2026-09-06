@@ -1,9 +1,16 @@
 import { useState } from 'react';
 import { Plus, Pencil, Trash2, Check, X } from 'lucide-react';
-import { useCohorts } from '@/hooks/useCohorts';
+import type { Cohort } from '@/types';
 
-export function CohortPanel() {
-  const { cohorts, isLoading, addCohort, updateCohort, deleteCohort } = useCohorts();
+interface CohortPanelProps {
+  cohorts: Cohort[];
+  isLoading: boolean;
+  addCohort: (name: string) => Promise<Cohort>;
+  updateCohort: (id: string, name: string) => Promise<void>;
+  deleteCohort: (id: string) => Promise<void>;
+}
+
+export function CohortPanel({ cohorts, isLoading, addCohort, updateCohort, deleteCohort }: CohortPanelProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [newName, setNewName] = useState('');
   const [editingId, setEditingId] = useState<string | null>(null);

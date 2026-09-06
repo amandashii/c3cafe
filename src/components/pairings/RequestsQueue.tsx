@@ -1,16 +1,17 @@
 import { useState } from 'react';
 import { Plus, X } from 'lucide-react';
-import { useRequests } from '@/hooks/useRequests';
 import { cn } from '@/lib/utils';
-import type { Member } from '@/types';
+import type { Member, Request } from '@/types';
 
 interface RequestsQueueProps {
-  yearId: string;
   activeMembers: Member[];
+  requests: Request[];
+  isLoading: boolean;
+  addRequest: (member1Id: string, member2Id: string, note?: string) => Promise<Request>;
+  deleteRequest: (id: string) => Promise<void>;
 }
 
-export function RequestsQueue({ yearId, activeMembers }: RequestsQueueProps) {
-  const { requests, isLoading, addRequest, deleteRequest } = useRequests(yearId);
+export function RequestsQueue({ activeMembers, requests, isLoading, addRequest, deleteRequest }: RequestsQueueProps) {
   const [isAdding, setIsAdding] = useState(false);
   const [member1Id, setMember1Id] = useState('');
   const [member2Id, setMember2Id] = useState('');

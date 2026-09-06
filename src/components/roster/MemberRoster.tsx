@@ -12,7 +12,7 @@ import type { Member, MemberFormData } from '@/types';
 export function MemberRoster() {
   const { activeYear } = useYearContext();
   const { members, isLoading, addMember, updateMember, deleteMember, toggleActive } = useMembers(activeYear?.id ?? null);
-  const { cohorts } = useCohorts();
+  const { cohorts, isLoading: cohortsLoading, addCohort, updateCohort, deleteCohort } = useCohorts();
 
   const [dialogMember, setDialogMember] = useState<Member | 'new' | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
@@ -62,7 +62,13 @@ export function MemberRoster() {
 
         {/* Left: cohorts panel */}
         <div className="w-52 shrink-0">
-          <CohortPanel />
+          <CohortPanel
+            cohorts={cohorts}
+            isLoading={cohortsLoading}
+            addCohort={addCohort}
+            updateCohort={updateCohort}
+            deleteCohort={deleteCohort}
+          />
         </div>
 
         {/* Right: members */}
